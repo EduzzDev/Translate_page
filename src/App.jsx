@@ -2,6 +2,13 @@
 import { useState, useRef, useEffect } from "react";
 import "./App.css";
 import Button from "/src/components/Button";
+import logo from "/src/assets/logo.svg";
+import fundo from "/src/assets/hero_img.jpg";
+import copy from "/src/assets/Copy.svg";
+import sound from "/src/assets/sound_max_fill.svg";
+import expandDown from "/src/assets/Expand_down.svg";
+import butttonChange from "/src/assets/Horizontal_top_left_main.svg";
+import sortAlfa from "/src/assets/Sort_alfa.svg";
 
 function App() {
   const [texto, setTexto] = useState("");
@@ -16,7 +23,7 @@ function App() {
     if (nome !== inputLanguage) {
       // Se nome for diferente do input trocarmos para o input
       setOutputLanguage(inputLanguage);
-    } 
+    }
   }
 
   function toggleOutputLanguage(nome) {
@@ -53,16 +60,8 @@ function App() {
     <>
       <main className="bg-[#040711]   w-dvw min-h-dvh ">
         <div className="w-screen flex flex-row justify-center">
-          <img
-            className="w-full h-80 object-cover "
-            src="/src/assets/hero_img.jpg"
-            alt="fundo"
-          />
-          <img
-            className="w-50 absolute top-15 "
-            src="/src/assets/logo.svg"
-            alt="logo"
-          />
+          <img className="w-full h-80 object-cover " src={fundo} alt="fundo" />
+          <img className="w-50 absolute top-15 " src={logo} alt="logo" />
         </div>
         <section className="flex flex-col  gap-y-4 lg:flex-row justify-center lg:gap-x-4">
           <nav
@@ -132,29 +131,17 @@ function App() {
               />
               <footer>
                 <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-5 top-14">
-                  <img
-                    className="w-6"
-                    src="/src/assets/sound_max_fill.svg"
-                    alt="som"
-                  />
+                  <img className="w-6" src={sound} alt="som" />
                 </button>
                 <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-2 top-14">
-                  <img
-                    className="w-6"
-                    src="/src/assets/Copy.svg"
-                    alt="icone de cópia"
-                  />
+                  <img className="w-6" src={copy} alt="icone de cópia" />
                 </button>
                 <div className="w-120 flex  min-[600px]:justify-end justify-evenly relative top-2 mt-1 ">
                   <button
                     className=" w-40 h-12 justify-center items-center flex text-[#F9FAFB] text-[16px]
                    border-[#F9FAFB] rounded-lg bg-[#263FA9]"
                   >
-                    <img
-                      className="w-7 h-8 mr-2"
-                      src="/src/assets/Sort_alfa.svg"
-                      alt="sort"
-                    />
+                    <img className="w-7 h-8 mr-2" src={sortAlfa} alt="sort" />
                     <h1>Translate</h1>
                   </button>
                 </div>
@@ -211,10 +198,7 @@ function App() {
                 </svg>
               </button>
               <button className="p-1 border-2 border-[#4D5562] rounded-lg relative ml-5 left-1/4">
-                <img
-                  src="/src/assets/Horizontal_top_left_main.svg"
-                  alt="botão de trocar"
-                />
+                <img src={butttonChange} alt="botão de trocar" />
               </button>
             </div>
             <div className="flex flex-col">
@@ -229,18 +213,10 @@ function App() {
               ></textarea>
               <footer>
                 <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-4 mt-14">
-                  <img
-                    className="w-6"
-                    src="/src/assets/sound_max_fill.svg"
-                    alt="som"
-                  />
+                  <img className="w-6" src={sound} alt="som" />
                 </button>
                 <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-2   mt-14">
-                  <img
-                    className="w-6"
-                    src="/src/assets/Copy.svg"
-                    alt="icone de cópia"
-                  />
+                  <img className="w-6" src={copy} alt="icone de cópia" />
                 </button>
               </footer>
             </div>
