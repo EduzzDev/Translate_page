@@ -1,4 +1,3 @@
-//import { useState } from 'react'g'
 import { useState, useRef, useEffect } from "react";
 import "./App.css";
 import Button from "/src/components/Button";
@@ -6,7 +5,6 @@ import logo from "/src/assets/logo.svg";
 import fundo from "/src/assets/hero_img.jpg";
 import copy from "/src/assets/Copy.svg";
 import sound from "/src/assets/sound_max_fill.svg";
-import expandDown from "/src/assets/Expand_down.svg";
 import butttonChange from "/src/assets/Horizontal_top_left_main.svg";
 import sortAlfa from "/src/assets/Sort_alfa.svg";
 
@@ -35,7 +33,14 @@ function App() {
       setOutputLanguage(nome);
     }
   }
-
+  // função que invete os idiomas quando clicada
+  function changeLanguage(nome) {
+    setInputLanguage(
+      inputLanguage === nome ? toggleInputLanguage("auto") : nome,
+    );
+    setInputLanguage(outputLanguage);
+    setOutputLanguage(inputLanguage);
+  }
   // Manipular a quantidade de caracteres
   const handleInput = (e) => {
     if (e.target.value.length <= 500) {
@@ -197,7 +202,10 @@ function App() {
                   <path d="m6 9 6 6 6-6" />
                 </svg>
               </button>
-              <button className="p-1 border-2 border-[#4D5562] rounded-lg relative ml-5 left-1/4">
+              <button
+                onClick={() => changeLanguage("auto")}
+                className="p-1 hover:bg-[#394150] cursor-pointer border-2 border-[#4D5562] rounded-lg relative ml-5 left-1/4"
+              >
                 <img src={butttonChange} alt="botão de trocar" />
               </button>
             </div>
@@ -208,7 +216,7 @@ function App() {
                 onChange={handleInput}
                 readOnly
                 rows={1}
-                className="lg:w-120  w-[90%]  pt-4 lg:pt-0   text-[18px] overflow-hidden text-[#F9FAFB] font-black ml-6 mb-12 lg:mb-10 border-0 resize-none outline-0"
+                className="lg:w-120  w-[90%]  pt-4 lg:pt-0  text-[18px] overflow-hidden text-[#F9FAFB] font-black ml-6 mb-12 lg:mb-10 border-0 resize-none outline-0"
                 aria-label="Texto de entrada"
               ></textarea>
               <footer>
