@@ -9,14 +9,21 @@ import butttonChange from "/src/assets/Horizontal_top_left_main.svg";
 import sortAlfa from "/src/assets/Sort_alfa.svg";
 
 function App() {
-  const [texto, setTexto] = useState("");
+  const [translatingText, setTranslatingText] = useState("Hello, how are you?");
+  const [translatedText, setTranslatedText] = useState("");
+  const [copied, setCopying] = useState(false);
   const textareaRef = useRef(null);
   const outputRef = useRef(null);
-  const [inputLanguage, setInputLanguage] = useState(null);
-  const [outputLanguage, setOutputLanguage] = useState(null);
+  const [inputLanguage, setInputLanguage] = useState("English");
+  const [outputLanguage, setOutputLanguage] = useState("French");
 
   // Toggle para entrada (lado esquerdo)
   function toggleInputLanguage(nome) {
+    setInputLanguage((prev) =>
+      prev.includes(nome)
+        ? prev.filter((lang) => lang !== nome)
+        : [...prev, nome],
+    );
     setInputLanguage(inputLanguage === nome ? null : nome);
     if (nome !== inputLanguage) {
       // Se nome for diferente do input trocarmos para o input
@@ -25,12 +32,20 @@ function App() {
   }
 
   function toggleOutputLanguage(nome) {
+    // pega o estado anterior e faz uma verificação
+    setOutputLanguage(
+      (prev) =>
+        prev.includes(nome)
+          ? prev.filter((lang) => lang !== nome) //remove
+          : [...prev, nome], //ativa
+    );
+
     if (nome === inputLanguage) {
       // Se escolher o mesmo idioma da entrada, troca os dois
       setInputLanguage(outputLanguage);
       setOutputLanguage(inputLanguage);
     } else {
-      setOutputLanguage(nome);
+      setOutputLanguage(outputLanguage === nome ? null : nome);
     }
   }
   // função que invete os idiomas quando clicada
@@ -44,11 +59,24 @@ function App() {
   // Manipular a quantidade de caracteres
   const handleInput = (e) => {
     if (e.target.value.length <= 500) {
-      setTexto(e.target.value);
+      setTranslatingText(e.target.value);
     }
   };
 
-  // ajuste de altura do input
+  // função para copiar o texto 
+  async function copying(text) {
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopying(true);
+      // reseta o botão a cada 2 segundos
+      setTimeout(() => setCopying(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  }
+
+  // manipula ajustando a altura do textarea
   useEffect(() => {
     const adjustHeight = (el) => {
       if (el) {
@@ -59,7 +87,7 @@ function App() {
     };
     adjustHeight(textareaRef.current);
     adjustHeight(outputRef.current);
-  }, [texto]);
+  }, [translatingText]);
 
   return (
     <>
@@ -77,7 +105,7 @@ function App() {
             <div className="  min-[600px]:w-120  lg:mb-5 w-140  border-b-2 pb-5 ml-4 lg:ml-4 border-[#394150]">
               <button
                 onClick={() => toggleInputLanguage("auto")}
-                className={`w-40 relative mt-8 p-2 font-semibold focus:bg-[#394150] focus:rounded-2xl  hover:rounded-2xl 
+                className={`w-40 relative mt-8 cursor-pointer p-2 font-semibold focus:bg-[#394150] focus:rounded-2xl  hover:rounded-2xl 
                hover:bg-[#394150] text-[#D2D5DA]  ${
                  inputLanguage === "auto"
                    ? "bg-[#394150] text-[#D2D5DA] rounded-2xl "
@@ -88,6 +116,7 @@ function App() {
               </button>
               <Button
                 nome="English"
+                value="en"
                 active={inputLanguage === "English"}
                 toggle={toggleInputLanguage}
               >
@@ -95,6 +124,7 @@ function App() {
               </Button>
               <Button
                 nome="French"
+                value="fr"
                 active={inputLanguage === "French"}
                 toggle={toggleInputLanguage}
               >
@@ -102,6 +132,7 @@ function App() {
               </Button>
               <Button
                 nome="Spanish"
+                value="es"
                 active={inputLanguage === "Spanish"}
                 toggle={toggleInputLanguage}
               >
@@ -128,22 +159,29 @@ function App() {
             <div className="flex flex-col gap-4 mt-4">
               <textarea
                 ref={textareaRef}
-                value={texto}
+                value={translatingText}
                 onChange={handleInput}
                 rows={1}
-                className="lg:w-120  w-[90%]   text-[18px] overflow-hidden text-[#F9FAFB] font-black ml-8 mb-10 border-0 resize-none outline-0"
+                className="lg:w-120  w-[90%] pointer text-[18px] overflow-hidden text-[#F9FAFB] font-black ml-8 mb-10 border-0 resize-none outline-0"
                 aria-label="Texto de entrada"
               />
               <footer>
-                <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-5 top-14">
-                  <img className="w-6" src={sound} alt="som" />
+                <button className="p-1 border-2 z-10 border-[#4D5562] rounded-xl relative ml-5 top-14">
+                  <img className="w-6 cursor-pointer" src={sound} alt="som" />
                 </button>
-                <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-2 top-14">
-                  <img className="w-6" src={copy} alt="icone de cópia" />
+                <button
+                  onClick={() => copying(translatingText)}
+                  className="p-1 border-2 z-10 border-[#4D5562] rounded-xl relative ml-2 top-14"
+                >
+                  <img
+                    className="w-6 cursor-pointer"
+                    src={copy}
+                    alt="icone de cópia"
+                  />
                 </button>
                 <div className="w-120 flex  min-[600px]:justify-end justify-evenly relative top-2 mt-1 ">
                   <button
-                    className=" w-40 h-12 justify-center items-center flex text-[#F9FAFB] text-[16px]
+                    className=" w-40 h-12 justify-center cursor-pointer items-center flex text-[#F9FAFB] text-[16px]
                    border-[#F9FAFB] rounded-lg bg-[#263FA9]"
                   >
                     <img className="w-7 h-8 mr-2" src={sortAlfa} alt="sort" />
@@ -155,7 +193,7 @@ function App() {
                 className="w-120 text-[#D2D5DA] relative 
               bottom-20 text-end text-[14px] font-semibold"
               >
-                {texto.length}/500
+                {translatingText.length}/500
               </p>
             </div>
           </nav>
@@ -167,21 +205,21 @@ function App() {
             <div className="  min-[600px]:w-110  lg:mb-5  border-b-2 pb-5 ml-4 lg:ml-2 border-[#394150]">
               <Button
                 nome="English"
-                active={outputLanguage === "English"}
+                active={outputLanguage.includes("English")}
                 toggle={toggleOutputLanguage}
               >
                 English
               </Button>
               <Button
                 nome="French"
-                active={outputLanguage === "French"}
+                active={outputLanguage.includes("French")}
                 toggle={toggleOutputLanguage}
               >
                 French
               </Button>
               <Button
                 nome="Spanish"
-                active={outputLanguage === "Spanish"}
+                active={outputLanguage.includes("Spanish")}
                 toggle={toggleOutputLanguage}
               >
                 Spanish{" "}
@@ -212,18 +250,21 @@ function App() {
             <div className="flex flex-col">
               <textarea
                 ref={outputRef}
-                value={texto}
-                onChange={handleInput}
+                value={translatedText}
                 readOnly
                 rows={1}
-                className="lg:w-120  w-[90%]  pt-4 lg:pt-0  text-[18px] overflow-hidden text-[#F9FAFB] font-black ml-6 mb-12 lg:mb-10 border-0 resize-none outline-0"
+                className="lg:w-120  w-[90%]  pt-4 lg:pt-0  text-[18px]
+                 overflow-hidden text-[#F9FAFB] font-black ml-6 mb-12 lg:mb-10 border-0 resize-none outline-0"
                 aria-label="Texto de entrada"
               ></textarea>
               <footer>
                 <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-4 mt-14">
                   <img className="w-6" src={sound} alt="som" />
                 </button>
-                <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-2   mt-14">
+                <button
+                  onClick={() => copying(translatedText)}
+                  className="p-1 border-2 cursor-pointer z-10 border-[#4D5562] rounded-xl relative ml-2   mt-14"
+                >
                   <img className="w-6" src={copy} alt="icone de cópia" />
                 </button>
               </footer>
