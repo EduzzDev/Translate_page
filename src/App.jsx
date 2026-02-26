@@ -17,6 +17,22 @@ function App() {
   const [inputLanguage, setInputLanguage] = useState("English");
   const [outputLanguage, setOutputLanguage] = useState("French");
 
+  //Mapeando idiomas para os códigos ISO para utilizar na api
+  const LanguageMap = {
+    English: "en-US",
+    French: "fr-FR",
+    Spanish: "es-ES",
+  };
+  // Lógica da fala
+  const speak = (text, languageCode) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    utterance.lang = languageCode;
+
+    window.speechSynthesis.cancel(utterance); // cancelando caso seja clicado mais de uma vez
+    window.speechSynthesis.speak(utterance);
+  };
+
   // Toggle para entrada (lado esquerdo)
   function toggleInputLanguage(nome) {
     setInputLanguage((prev) =>
@@ -63,7 +79,7 @@ function App() {
     }
   };
 
-  // função para copiar o texto 
+  //copia o texto
   async function copying(text) {
     if (!text) return;
     try {
@@ -166,7 +182,12 @@ function App() {
                 aria-label="Texto de entrada"
               />
               <footer>
-                <button className="p-1 border-2 z-10 border-[#4D5562] rounded-xl relative ml-5 top-14">
+                <button
+                  onClick={() =>
+                    speak(translatingText, LanguageMap[inputLanguage])
+                  }
+                  className="p-1 border-2 z-10 border-[#4D5562] rounded-xl relative ml-5 top-14"
+                >
                   <img className="w-6 cursor-pointer" src={sound} alt="som" />
                 </button>
                 <button
