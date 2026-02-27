@@ -79,7 +79,24 @@ function App() {
     }
   };
 
-  //copia o texto
+  //Lógica da tradução
+  async function handleTranslate(text, languageIn, languageOut) {
+    const url = `https://api.mymemory.translated.net/get?
+    q=${encodeURIComponent(text)}
+    &langpair=${languageIn}|${languageOut}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      setTranslatedText(data.responseData.translatedText);
+    } catch (error) {
+      console.error("Translation error:", error);
+      alert("Couldn't translate"); 
+    }
+  }
+
+  //Lógica da copia de texto
   async function copying(text) {
     if (!text) return;
     try {
@@ -178,7 +195,9 @@ function App() {
                 value={translatingText}
                 onChange={handleInput}
                 rows={1}
-                className="lg:w-120  w-[90%] pointer text-[18px] overflow-hidden text-[#F9FAFB] font-black ml-8 mb-10 border-0 resize-none outline-0"
+                className="lg:w-120  w-[90%] pointer 
+                text-[18px] overflow-hidden text-[#F9FAFB]
+                 font-black ml-8 mb-10 border-0 resize-none outline-0"
                 aria-label="Texto de entrada"
               />
               <footer>
@@ -186,13 +205,15 @@ function App() {
                   onClick={() =>
                     speak(translatingText, LanguageMap[inputLanguage])
                   }
-                  className="p-1 border-2 z-10 border-[#4D5562] rounded-xl relative ml-5 top-14"
+                  className="p-1 border-2 z-10 border-[#4D5562] 
+                  rounded-xl relative ml-5 top-14"
                 >
                   <img className="w-6 cursor-pointer" src={sound} alt="som" />
                 </button>
                 <button
                   onClick={() => copying(translatingText)}
-                  className="p-1 border-2 z-10 border-[#4D5562] rounded-xl relative ml-2 top-14"
+                  className="p-1 border-2 z-10 border-[#4D5562] 
+                  rounded-xl relative ml-2 top-14"
                 >
                   <img
                     className="w-6 cursor-pointer"
@@ -200,8 +221,18 @@ function App() {
                     alt="icone de cópia"
                   />
                 </button>
-                <div className="w-120 flex  min-[600px]:justify-end justify-evenly relative top-2 mt-1 ">
+                <div
+                  className="w-120 flex  min-[600px]:justify-end 
+                justify-evenly relative top-2 mt-1 "
+                >
                   <button
+                    onClick={() =>
+                      handleTranslate(
+                        translatingText,
+                        LanguageMap[inputLanguage],
+                        LanguageMap[outputLanguage],
+                      )
+                    }
                     className=" w-40 h-12 justify-center cursor-pointer items-center flex text-[#F9FAFB] text-[16px]
                    border-[#F9FAFB] rounded-lg bg-[#263FA9]"
                   >
@@ -279,7 +310,12 @@ function App() {
                 aria-label="Texto de entrada"
               ></textarea>
               <footer>
-                <button className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-4 mt-14">
+                <button
+                  onClick={() =>
+                    speak(translatedText, LanguageMap[outputLanguage])
+                  }
+                  className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-4 mt-14"
+                >
                   <img className="w-6" src={sound} alt="som" />
                 </button>
                 <button
