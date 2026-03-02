@@ -6,6 +6,8 @@ import fundo from "/src/assets/hero_img.jpg";
 import copy from "/src/assets/Copy.svg";
 import sound from "/src/assets/sound_max_fill.svg";
 import butttonChange from "/src/assets/Horizontal_top_left_main.svg";
+import { detect } from "tinyld";
+
 import sortAlfa from "/src/assets/Sort_alfa.svg";
 
 function App() {
@@ -23,6 +25,23 @@ function App() {
     French: "fr-FR",
     Spanish: "es-ES",
   };
+
+  // Função par idiomar a detecta do texto de entrada usando tinyld
+  const detectLanguage = (text) => {
+    if (!text || text.trim().length === 0) return "en-US";
+
+    // tinyld.detect retorna código ISO de duas letras
+    const detectedCode = detect(text) || "en";
+
+    const languageMapping = {
+      en: "en-US",
+      fr: "fr-FR",
+      es: "es-ES",
+    };
+
+    return languageMapping[detectedCode] || "en-US";
+  };
+
   // Lógica da fala
   const speak = (text, languageCode) => {
     const utterance = new SpeechSynthesisUtterance(text);
@@ -33,42 +52,28 @@ function App() {
     window.speechSynthesis.speak(utterance);
   };
 
-  // Toggle para entrada (lado esquerdo)
+  // Toggle para entrada - escolhe um idioma ou 'auto'
   function toggleInputLanguage(nome) {
-    setInputLanguage((prev) =>
-      prev.includes(nome)
-        ? prev.filter((lang) => lang !== nome)
-        : [...prev, nome],
-    );
-    setInputLanguage(inputLanguage === nome ? null : nome);
-    if (nome !== inputLanguage) {
-      // Se nome for diferente do input trocarmos para o input
+    if (nome === inputLanguage) return; // nada muda quando clica novamente
+    // se houver um idioma definido anteriormente, movemos ele para o output
+    if (inputLanguage && inputLanguage !== "auto") {
       setOutputLanguage(inputLanguage);
     }
+    setInputLanguage(nome);
   }
-
+  // Toggle para saída
   function toggleOutputLanguage(nome) {
-    // pega o estado anterior e faz uma verificação
-    setOutputLanguage(
-      (prev) =>
-        prev.includes(nome)
-          ? prev.filter((lang) => lang !== nome) //remove
-          : [...prev, nome], //ativa
-    );
-
+    if (nome === outputLanguage) return;
+    // se usuário escolher mesmo idioma da entrada, invertemos
     if (nome === inputLanguage) {
-      // Se escolher o mesmo idioma da entrada, troca os dois
       setInputLanguage(outputLanguage);
       setOutputLanguage(inputLanguage);
     } else {
-      setOutputLanguage(outputLanguage === nome ? null : nome);
+      setOutputLanguage(nome);
     }
   }
-  // função que invete os idiomas quando clicada
-  function changeLanguage(nome) {
-    setInputLanguage(
-      inputLanguage === nome ? toggleInputLanguage("auto") : nome,
-    );
+  // função que inverte os idiomas quando clicada
+  function changeLanguage() {
     setInputLanguage(outputLanguage);
     setOutputLanguage(inputLanguage);
   }
@@ -81,9 +86,17 @@ function App() {
 
   //Lógica da tradução
   async function handleTranslate(text, languageIn, languageOut) {
+    // se entrada for "auto", determina pelo texto
+    const langInCode =
+      languageIn === "auto"
+        ? detectLanguage(text)
+        : LanguageMap[languageIn] || "en-US";
+
+    const langOutCode = LanguageMap[languageOut] || "en-US";
+
     const url = `https://api.mymemory.translated.net/get?
     q=${encodeURIComponent(text)}
-    &langpair=${languageIn}|${languageOut}`;
+    &langpair=${langInCode}|${langOutCode}`;
 
     try {
       const response = await fetch(url);
@@ -92,7 +105,7 @@ function App() {
       setTranslatedText(data.responseData.translatedText);
     } catch (error) {
       console.error("Translation error:", error);
-      alert("Couldn't translate"); 
+      alert("Couldn't translate");
     }
   }
 
@@ -203,7 +216,12 @@ function App() {
               <footer>
                 <button
                   onClick={() =>
-                    speak(translatingText, LanguageMap[inputLanguage])
+                    speak(
+                      translatingText,
+                      inputLanguage === "auto"
+                        ? detectLanguage(translatingText)
+                        : LanguageMap[inputLanguage],
+                    )
                   }
                   className="p-1 border-2 z-10 border-[#4D5562] 
                   rounded-xl relative ml-5 top-14"
@@ -229,8 +247,8 @@ function App() {
                     onClick={() =>
                       handleTranslate(
                         translatingText,
-                        LanguageMap[inputLanguage],
-                        LanguageMap[outputLanguage],
+                        inputLanguage,
+                        outputLanguage,
                       )
                     }
                     className=" w-40 h-12 justify-center cursor-pointer items-center flex text-[#F9FAFB] text-[16px]
