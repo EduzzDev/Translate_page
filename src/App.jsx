@@ -12,9 +12,11 @@ import sortAlfa from "/src/assets/Sort_alfa.svg";
 
 function App() {
   const [translatingText, setTranslatingText] = useState("Hello, how are you?");
-  const [translatedText, setTranslatedText] = useState("");
+  const [translatedText, setTranslatedText] = useState(
+    "Bonjour, comment allez-vous ?",
+  );
   const [copied, setCopying] = useState(false);
-  const textareaRef = useRef(null);
+  const inputRef = useRef(null);
   const outputRef = useRef(null);
   const [inputLanguage, setInputLanguage] = useState("English");
   const [outputLanguage, setOutputLanguage] = useState("French");
@@ -81,6 +83,7 @@ function App() {
   const handleInput = (e) => {
     if (e.target.value.length <= 500) {
       setTranslatingText(e.target.value);
+      setTranslatedText;
     }
   };
 
@@ -126,29 +129,50 @@ function App() {
   useEffect(() => {
     const adjustHeight = (el) => {
       if (el) {
-        el.style.height = "auto"; // Reseta a altura para o mínimo
-        // Se tiver texto, ele assume o scrollHeight
+        el.style.height = "auto";
         el.style.height = el.scrollHeight + "px";
       }
     };
-    adjustHeight(textareaRef.current);
+
+    adjustHeight(inputRef.current);
+
+    // sincroniza altura do output com o input sempre que este muda
+    if (outputRef.current && inputRef.current) {
+      outputRef.current.style.height = inputRef.current.style.height;
+    }
+  }, [translatingText]); // dispara ao mudar o texto de entrada
+
+  // mantém a lógica original caso o texto traduzido seja maior que o input
+  useEffect(() => {
+    const adjustHeight = (el) => {
+      if (el) {
+        el.style.height = "auto";
+        el.style.height = el.scrollHeight + "px";
+      }
+    };
+    
     adjustHeight(outputRef.current);
-  }, [translatingText]);
+
+    // sincroniza altura do input com o output sempre que este muda
+    if (outputRef.current && inputRef.current) {
+      inputRef.current.style.height = outputRef.current.style.height;
+    }
+  }, [translatedText]); // dispara quando a tradução chega
 
   return (
     <>
-      <main className="bg-[#040711]   w-dvw min-h-dvh ">
+      <main className="bg-[#040711]  min-w-dvw min-h-dvh ">
         <div className="w-screen flex flex-row justify-center">
           <img className="w-full h-80 object-cover " src={fundo} alt="fundo" />
           <img className="w-50 absolute top-15 " src={logo} alt="logo" />
         </div>
         <section className="flex flex-col  gap-y-4 lg:flex-row justify-center lg:gap-x-4">
           <nav
-            className="bg-[rgba(18,24,38,0.8)] w-dvw relative  lg:bottom-38 min-[600px]:left-10 min-[600px]:w-130 
+            className="bg-[rgba(18,24,38,0.8)] w-full relative bottom-38 min-[600px]:left-10 min-[600px]:w-130 
             border-2 border-[#4D5562]  rounded-3xl"
             aria-label="Seleção de idiomas"
           >
-            <div className="  min-[600px]:w-120  lg:mb-5 w-140  border-b-2 pb-5 ml-4 lg:ml-4 border-[#394150]">
+            <div className="  min-[500px]:w-120  lg:mb-5  border-b-2 pb-5 min-[500px]:ml-4 lg:ml-4 border-[#394150]">
               <button
                 onClick={() => toggleInputLanguage("auto")}
                 className={`w-40 relative mt-8 cursor-pointer p-2 font-semibold focus:bg-[#394150] focus:rounded-2xl  hover:rounded-2xl 
@@ -202,13 +226,13 @@ function App() {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col min-[500px]:gap-4 mt-4">
               <textarea
-                ref={textareaRef}
+                ref={inputRef}
                 value={translatingText}
                 onChange={handleInput}
                 rows={1}
-                className="lg:w-120  w-[90%] pointer 
+                className="lg:w-120  w-full pointer 
                 text-[18px] overflow-hidden text-[#F9FAFB]
                  font-black ml-8 mb-10 border-0 resize-none outline-0"
                 aria-label="Texto de entrada"
@@ -260,7 +284,7 @@ function App() {
                 </div>
               </footer>
               <p
-                className="w-120 text-[#D2D5DA] relative 
+                className="min-[500px]:w-120 text-[#D2D5DA] relative 
               bottom-20 text-end text-[14px] font-semibold"
               >
                 {translatingText.length}/500
@@ -268,7 +292,7 @@ function App() {
             </div>
           </nav>
           <nav
-            className="bg-[rgba(18,24,38,0.8)] w-dvw pb-4 lg:pb-0 relative min-h-85 lg:bottom-38 min-[600px]:left-10  min-[600px]:w-130 
+            className="bg-[rgba(18,24,38,0.8)] w-dvw pb-4 lg:pb-0 relative min-h-85 bottom-38 min-[600px]:left-10  min-[600px]:w-130 
             border-2 border-[#4D5562]  rounded-3xl"
             aria-label="Seleção de idiomas"
           >
@@ -317,30 +341,43 @@ function App() {
                 <img src={butttonChange} alt="botão de trocar" />
               </button>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col min-[500px]:gap-4 mt-4">
               <textarea
                 ref={outputRef}
                 value={translatedText}
-                readOnly
+                onChange={handleInput}
                 rows={1}
-                className="lg:w-120  w-[90%]  pt-4 lg:pt-0  text-[18px]
-                 overflow-hidden text-[#F9FAFB] font-black ml-6 mb-12 lg:mb-10 border-0 resize-none outline-0"
-                aria-label="Texto de entrada"
-              ></textarea>
-              <footer>
+                className="lg:w-120  w-full pointer 
+                text-[18px] overflow-hidden text-[#F9FAFB]
+                 font-black ml-8 mb-10 border-0 resize-none outline-0"
+                aria-label="Texto de saída"
+                readOnly
+              />
+              <footer className="flex gap-y-2 gap-2">
                 <button
                   onClick={() =>
-                    speak(translatedText, LanguageMap[outputLanguage])
+                    speak(
+                      translatedText,
+                      inputLanguage === "auto"
+                        ? detectLanguage(translatedText)
+                        : LanguageMap[outputLanguage],
+                    )
                   }
-                  className="p-1 border-2 border-[#4D5562] rounded-xl relative ml-4 mt-14"
+                  className="p-1 border-2 z-10 border-[#4D5562] 
+                  rounded-xl relative ml-3 top-14 "
                 >
-                  <img className="w-6" src={sound} alt="som" />
+                  <img className="w-6 cursor-pointer" src={sound} alt="som" />
                 </button>
                 <button
                   onClick={() => copying(translatedText)}
-                  className="p-1 border-2 cursor-pointer z-10 border-[#4D5562] rounded-xl relative ml-2   mt-14"
+                  className="p-1 border-2 z-10 border-[#4D5562] 
+                  rounded-xl relative  top-14"
                 >
-                  <img className="w-6" src={copy} alt="icone de cópia" />
+                  <img
+                    className="w-6 cursor-pointer"
+                    src={copy}
+                    alt="icone de cópia"
+                  />
                 </button>
               </footer>
             </div>
