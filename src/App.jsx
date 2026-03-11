@@ -150,7 +150,7 @@ function App() {
         el.style.height = el.scrollHeight + "px";
       }
     };
-    
+
     adjustHeight(outputRef.current);
 
     // sincroniza altura do input com o output sempre que este muda
@@ -172,7 +172,11 @@ function App() {
             border-2 border-[#4D5562]  rounded-3xl"
             aria-label="Seleção de idiomas"
           >
-            <div className="  min-[500px]:w-120  lg:mb-5  border-b-2 pb-5 min-[500px]:ml-4 lg:ml-4 border-[#394150]">
+            <div
+              className=" w-[90%] h-[25dvw] ml-2 min-[500px]:h-25 text-[16px] overflow-hidden text-[#F9FAFB]font-black 
+              resize-none outline-0  lg:mb-5  
+              border-b-2 pb-5 min-[500px]:ml-4 border-[#394150]"
+            >
               <button
                 onClick={() => toggleInputLanguage("auto")}
                 className={`w-40 relative mt-8 cursor-pointer p-2 font-semibold focus:bg-[#394150] focus:rounded-2xl  hover:rounded-2xl 
@@ -205,10 +209,10 @@ function App() {
                 value="es"
                 active={inputLanguage === "Spanish"}
                 toggle={toggleInputLanguage}
+                className="hidden md:block"
               >
                 Spanish{" "}
               </Button>
-
               <button className="relative top-2 ml-2">
                 <svg
                   className="flex"
@@ -226,15 +230,14 @@ function App() {
                 </svg>
               </button>
             </div>
-            <div className="flex flex-col min-[500px]:gap-4 mt-4">
+            <div className="flex flex-col  min-[500px]:gap-4 mt-4">
               <textarea
                 ref={inputRef}
                 value={translatingText}
                 onChange={handleInput}
                 rows={1}
-                className="lg:w-120  w-full pointer 
-                text-[18px] overflow-hidden text-[#F9FAFB]
-                 font-black ml-8 mb-10 border-0 resize-none outline-0"
+                className="lg:w-120 w-[90%] min-h-10 text-[18px] text-[#F9FAFB] 
+                font-black mx-auto mb-10 border-0 resize-none outline-none"
                 aria-label="Texto de entrada"
               />
               <footer>
@@ -264,8 +267,8 @@ function App() {
                   />
                 </button>
                 <div
-                  className="w-120 flex  min-[600px]:justify-end 
-                justify-evenly relative top-2 mt-1 "
+                  className=" w-[90%] flex   justify-end 
+                 relative top-2 mt-1 "
                 >
                   <button
                     onClick={() =>
@@ -275,7 +278,7 @@ function App() {
                         outputLanguage,
                       )
                     }
-                    className=" w-40 h-12 justify-center cursor-pointer items-center flex text-[#F9FAFB] text-[16px]
+                    className=" w-40 h-12 justify-center cursr-pointer items-center flex text-[#F9FAFB] text-[16px]
                    border-[#F9FAFB] rounded-lg bg-[#263FA9]"
                   >
                     <img className="w-7 h-8 mr-2" src={sortAlfa} alt="sort" />
@@ -284,7 +287,7 @@ function App() {
                 </div>
               </footer>
               <p
-                className="min-[500px]:w-120 text-[#D2D5DA] relative 
+                className="w-[90%] text-[#D2D5DA] relative 
               bottom-20 text-end text-[14px] font-semibold"
               >
                 {translatingText.length}/500
@@ -292,11 +295,15 @@ function App() {
             </div>
           </nav>
           <nav
-            className="bg-[rgba(18,24,38,0.8)] w-dvw pb-4 lg:pb-0 relative min-h-85 bottom-38 min-[600px]:left-10  min-[600px]:w-130 
+            className="bg-[rgba(18,24,38,0.8)] w-dvw pb-4 lg:pb-0 relative  min-h-76  min-[500px]:min-h-85 bottom-38 min-[600px]:left-10  min-[600px]:w-130 
             border-2 border-[#4D5562]  rounded-3xl"
             aria-label="Seleção de idiomas"
           >
-            <div className="  min-[600px]:w-110  lg:mb-5  border-b-2 pb-5 ml-4 lg:ml-2 border-[#394150]">
+            <div
+              className=" w-[90%] ml-1 min-[500px]:h-25 text-[16px] overflow-hidden text-[#F9FAFB]font-black 
+              resize-none outline-0  lg:mb-5 
+              border-b-2 pb-5 min-[500px]:ml-4 border-[#394150]"
+            >
               <Button
                 nome="English"
                 active={outputLanguage.includes("English")}
@@ -308,6 +315,7 @@ function App() {
                 nome="French"
                 active={outputLanguage.includes("French")}
                 toggle={toggleOutputLanguage}
+                className="hidden md:block"
               >
                 French
               </Button>
@@ -315,28 +323,13 @@ function App() {
                 nome="Spanish"
                 active={outputLanguage.includes("Spanish")}
                 toggle={toggleOutputLanguage}
+                className="hidden md:block"
               >
                 Spanish{" "}
               </Button>
-              <button className="relative top-2 ml-2">
-                <svg
-                  className="flex"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="26"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#e5e7eb"
-                  stroke-width="2.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </button>
               <button
                 onClick={() => changeLanguage("auto")}
-                className="p-1 hover:bg-[#394150] cursor-pointer border-2 border-[#4D5562] rounded-lg relative ml-5 left-1/4"
+                className="p-1 hover:bg-[#394150] left-1/5 min-[500px]:left-2/5 cursor-pointer border-2 border-[#4D5562] rounded-lg relative "
               >
                 <img src={butttonChange} alt="botão de trocar" />
               </button>
@@ -347,9 +340,8 @@ function App() {
                 value={translatedText}
                 onChange={handleInput}
                 rows={1}
-                className="lg:w-120  w-full pointer 
-                text-[18px] overflow-hidden text-[#F9FAFB]
-                 font-black ml-8 mb-10 border-0 resize-none outline-0"
+                className="lg:w-120 w-[90%] min-h-10 text-[18px] text-[#F9FAFB] 
+                font-black mx-auto mb-10 border-0 resize-none outline-none"
                 aria-label="Texto de saída"
                 readOnly
               />
