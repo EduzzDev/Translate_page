@@ -169,17 +169,17 @@ function App() {
         <section className="flex flex-col  gap-y-4 lg:flex-row justify-center lg:gap-x-4">
           <nav
             className="bg-[rgba(18,24,38,0.8)] w-full relative bottom-38 min-[600px]:left-10 min-[600px]:w-130 
-            border-2 border-[#4D5562]  rounded-3xl"
+            border-2 border-[#4D5562]  rounded-3xl "
             aria-label="Seleção de idiomas"
           >
             <div
-              className=" w-[90%] h-[25dvw] ml-2 min-[500px]:h-25 text-[16px] overflow-hidden text-[#F9FAFB]font-black 
+              className=" w-[90%] h-[25dvw]  mt-2 ml-2  overflow-x-scroll min-[500px]:h-22 text-[16px] min-[500px]:overflow-hidden text-[#F9FAFB]font-black 
               resize-none outline-0  lg:mb-5  
-              border-b-2 pb-5 min-[500px]:ml-4 border-[#394150]"
+              border-b-2 pb-2 min-[500px]:ml-4 border-[#394150] flex flex-row items-center"
             >
               <button
                 onClick={() => toggleInputLanguage("auto")}
-                className={`w-40 relative mt-8 cursor-pointer p-2 font-semibold focus:bg-[#394150] focus:rounded-2xl  hover:rounded-2xl 
+                className={`w-40 relative cursor-pointer p-2 font-semibold focus:bg-[#394150] focus:rounded-2xl  hover:rounded-2xl 
                hover:bg-[#394150] text-[#D2D5DA]  ${
                  inputLanguage === "auto"
                    ? "bg-[#394150] text-[#D2D5DA] rounded-2xl "
@@ -213,7 +213,7 @@ function App() {
               >
                 Spanish{" "}
               </Button>
-              <button className="relative top-2 ml-2">
+              <button className="relative  ml-2">
                 <svg
                   className="flex"
                   xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +236,7 @@ function App() {
                 value={translatingText}
                 onChange={handleInput}
                 rows={1}
-                className="lg:w-120 w-[90%] min-h-10 text-[18px] text-[#F9FAFB] 
+                className="lg:w-120 w-[90%] overflow-hidden min-h-10 text-[18px] text-[#F9FAFB] 
                 font-black mx-auto mb-10 border-0 resize-none outline-none"
                 aria-label="Texto de entrada"
               />
@@ -300,9 +300,9 @@ function App() {
             aria-label="Seleção de idiomas"
           >
             <div
-              className=" w-[90%] ml-1 min-[500px]:h-25 text-[16px] overflow-hidden text-[#F9FAFB]font-black 
-              resize-none outline-0  lg:mb-5 
-              border-b-2 pb-5 min-[500px]:ml-4 border-[#394150]"
+              className=" w-[90%] h-[25dvw]  mt-2 ml-2  overflow-x-scroll min-[500px]:h-22 text-[16px] min-[500px]:overflow-hidden text-[#F9FAFB]font-black 
+              resize-none outline-0  lg:mb-5  
+              border-b-2 pb-2 min-[500px]:ml-4 border-[#394150] flex flex-row items-center"
             >
               <Button
                 nome="English"
@@ -315,7 +315,7 @@ function App() {
                 nome="French"
                 active={outputLanguage.includes("French")}
                 toggle={toggleOutputLanguage}
-                className="hidden md:block"
+                className=" block"
               >
                 French
               </Button>
@@ -323,7 +323,7 @@ function App() {
                 nome="Spanish"
                 active={outputLanguage.includes("Spanish")}
                 toggle={toggleOutputLanguage}
-                className="hidden md:block"
+                className=" block"
               >
                 Spanish{" "}
               </Button>
@@ -334,18 +334,18 @@ function App() {
                 <img src={butttonChange} alt="botão de trocar" />
               </button>
             </div>
-            <div className="flex flex-col min-[500px]:gap-4 mt-4">
+            <div className="flex flex-col min-[500px]:gap-4 mt-2">
               <textarea
                 ref={outputRef}
                 value={translatedText}
                 onChange={handleInput}
                 rows={1}
-                className="lg:w-120 w-[90%] min-h-10 text-[18px] text-[#F9FAFB] 
+                className="lg:w-120 w-[90%] min-h-15 overflow-hidden text-[18px] text-[#F9FAFB] 
                 font-black mx-auto mb-10 border-0 resize-none outline-none"
                 aria-label="Texto de saída"
                 readOnly
               />
-              <footer className="flex gap-y-2 gap-2">
+              <footer className="flex min-h-18 min-[500px]:min-h-0 items-end flex-row justify-start gap-2 ">
                 <button
                   onClick={() =>
                     speak(
@@ -356,14 +356,14 @@ function App() {
                     )
                   }
                   className="p-1 border-2 z-10 border-[#4D5562] 
-                  rounded-xl relative ml-3 top-14 "
+                  rounded-xl relative ml-3 min-[500px]:top-14 "
                 >
                   <img className="w-6 cursor-pointer" src={sound} alt="som" />
                 </button>
                 <button
                   onClick={() => copying(translatedText)}
                   className="p-1 border-2 z-10 border-[#4D5562] 
-                  rounded-xl relative  top-14"
+                  rounded-xl relative min-[500px]:top-14"
                 >
                   <img
                     className="w-6 cursor-pointer"
