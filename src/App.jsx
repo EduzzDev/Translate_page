@@ -26,6 +26,7 @@ function App() {
     English: "en-US",
     French: "fr-FR",
     Spanish: "es-ES",
+    es: "es-ES",
   };
 
   // Função par idiomar a detecta do texto de entrada usando tinyld
