@@ -64,14 +64,13 @@ npm run lint
 1. Digite ou cole o texto que deseja traduzir
 2. O idioma será detectado automaticamente
 3. Selecione o idioma de destino
-4. A tradução aparece em tempo real (em futuras implementações)
+4. A tradução aparece após click no botão de Translate
 5. Use os botões para:
    - 🔊 **Ouvir** a pronúncia
    - 📋 **Copiar** o texto traduzido
    - 🔄 **Inverter** idiomas
 
 ## 📁 Estrutura do Projeto
-
 ```
 src/
 ├── components/          # Componentes React reutilizáveis
@@ -114,5 +113,4 @@ Este projeto está sob a licença MIT.
 Eduardo
 
 ---
-
 **Dica**: A síntese de fala depende do navegador - funciona melhor em Chrome, Edge e Safari.
