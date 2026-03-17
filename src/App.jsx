@@ -209,7 +209,7 @@ function App() {
                 value="es"
                 active={inputLanguage === "Spanish"}
                 toggle={toggleInputLanguage}
-                className="hidden md:block"
+                className="block"
               >
                 Spanish{" "}
               </Button>
