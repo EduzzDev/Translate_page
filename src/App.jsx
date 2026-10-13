@@ -28,7 +28,7 @@ function App() {
     Spanish: "es-ES",
   };
 
-  // Função par idiomar a detecta do texto de entrada usando tinyld
+  // Função de idioma para detectar o texto de entrada usando tinyld
   const detectLanguage = (text) => {
     if (!text || text.trim().length === 0) return "en-US";
 
